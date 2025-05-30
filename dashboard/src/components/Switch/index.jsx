@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   getStatusControlById,
   getStatusLightingById,
+  getStatusVentilation,
   TurnOffControlById,
   TurnOffLightingById,
+  TurnOffVentilation,
   TurnOnControlById,
   TurnOnLightingById,
+  TurnOnVentilation,
 } from "../../features/api/apiClient";
 import { useDispatch } from "react-redux";
 import { fetchDataFailure } from "../../features/api/apiSlice";
@@ -26,28 +29,43 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       dispatch(fetchDataFailure(error.message));
     }
   };
+  const fetchStatusVentilation = async ()=>{
+    try {
+        const response = await getStatusVentilation();
+        setIsChecked(response.data);
+    } catch (error) {
+      dispatch(fetchDataFailure(error.message));
+    }
+  }
   const TurnLighTingOnOrOff = async (id) => {
     try {
-
-        if (isChecked) {
+      if (isChecked) {
         await TurnOffLightingById(id);
       } else {
         await TurnOnLightingById(id);
       }
-
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
   };
-    const TurnControlOnOrOff = async (id) => {
+  const TurnControlOnOrOff = async (id) => {
     try {
-
-        if (isChecked) {
+      if (isChecked) {
         await TurnOffControlById(id);
       } else {
         await TurnOnControlById(id);
       }
-
+    } catch (error) {
+      dispatch(fetchDataFailure(error.message));
+    }
+  };
+    const TurnVentilationOnOrOff = async () => {
+    try {
+      if (isChecked) {
+        await TurnOffVentilation();
+      } else {
+        await TurnOnVentilation();
+      }
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
@@ -55,18 +73,25 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
   const handleToggle = () => {
     setIsChecked(!isChecked);
     if (onChange) {
-            if(type=="lighting"){
-
-              TurnLighTingOnOrOff(id);
-            }
-            if(type == "control"){
-              TurnControlOnOrOff(id)
-            }
+      if (type == "lighting") {
+        TurnLighTingOnOrOff(id);
+      }
+      if (type == "control") {
+        TurnControlOnOrOff(id);
+      }
+      if(type == "ventilation"){
+        TurnVentilationOnOrOff()
+      }
       onChange(!isChecked);
     }
   };
   useEffect(() => {
-    fetchStatus(id);
+    
+    if(type == "ventilation"){
+      fetchStatusVentilation();
+    }else{
+      fetchStatus(id);
+    }
   }, [dispatch]);
   return (
     <div className="flex items-center gap-2">

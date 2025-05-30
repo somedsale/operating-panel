@@ -22,8 +22,16 @@ export const getStatusControlById = (id) => apiClient.get(`/control/status/${id}
 export const TurnOnControlById = (id) => apiClient.get(`/control/turn-on/${id}`);
 export const TurnOffControlById = (id) => apiClient.get(`/control/turn-off/${id}`);
 
-//api power
+//api ventilation
+export const getVentilation = () => apiClient.get('/ventilation');
+export const getStatusVentilation = () => apiClient.get(`/ventilation/status`);
+export const TurnOnVentilation = () => apiClient.get(`/ventilation/turn-on`);
+export const TurnOffVentilation = () => apiClient.get(`/ventilation/turn-off`);
+export const decreaseVentilation = () => apiClient.get(`/ventilation/decrease`);
+export const increaseVentilation = () => apiClient.get(`/ventilation/increase`);
 
+
+//api power
 export const getAllPower = () => apiClient.get('/power');
 export const getStatusPower = (id) => apiClient.get(`/power/status/${id}`);
 

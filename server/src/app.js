@@ -5,7 +5,7 @@ const sensorRoutes = require('./routes/sensorRoutes');
 const controlRoutes = require('./routes/controlRoutes');
 const powerRoutes = require('./routes/powerRoutes')
 const gasRoutes = require('./routes/gasRoutes')
-
+const ventilationRoutes = require('./routes/ventilationRoutes')
 
 const app = express();
 const cors = require('cors');
@@ -20,6 +20,7 @@ app.use('/api/sensor',sensorRoutes)
 app.use('/api/control',controlRoutes)
 app.use('/api/power',powerRoutes)
 app.use('/api/gas',gasRoutes)
+app.use('/api/ventilation',ventilationRoutes)
 
 
 // Basic route
