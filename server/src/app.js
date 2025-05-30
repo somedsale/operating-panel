@@ -13,7 +13,15 @@ const { origin } = require('../config/env');
 // Middleware
 app.use(express.json()); // Parse JSON body
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded body
-app.use(cors({ origin: origin }));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Cho phép tất cả origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Các phương thức được phép
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Các header được phép
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200); // Xử lý preflight request
+  }
+  next();
+});
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/lightings', lightingRoutes);
