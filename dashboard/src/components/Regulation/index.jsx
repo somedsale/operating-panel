@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   decreaseVentilation,
+  getStatusLightingById,
   getVentilation,
   increaseVentilation,
 } from "../../features/api/apiClient";
@@ -16,6 +17,17 @@ const Regulation = ({ isOn, type }) => {
       const response = await getVentilation();
       setLevel(response.data.volume);
       setIsChecked(response.data.status);
+    } catch (error) {
+      dispatch(fetchDataFailure(error.message));
+    }
+  };
+    const fetchLightingStatus = async () => {
+    try {
+      const response = await getStatusLightingById(1);
+      const response1 = await getStatusLightingById(2);
+
+      // setLevel(response.data.volume);
+      setIsChecked(response.data.status||response1.data.status);
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
@@ -65,10 +77,16 @@ const Regulation = ({ isOn, type }) => {
     if (type == "ventilation") {
       fetchVentilation();
     }
+    else if(type =="lighting"){
+      fetchLightingStatus()
+    }
     const timer = setInterval(() => {
-      if (type == "ventilation") {
-        fetchVentilation();
-      }
+    if (type == "ventilation") {
+      fetchVentilation();
+    }
+    else if(type =="lighting"){
+      fetchLightingStatus()
+    }
     }, 1000);
 
     // Dọn dẹp interval khi component unmount

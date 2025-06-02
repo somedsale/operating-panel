@@ -29,14 +29,14 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       dispatch(fetchDataFailure(error.message));
     }
   };
-  const fetchStatusVentilation = async ()=>{
+  const fetchStatusVentilation = async () => {
     try {
-        const response = await getStatusVentilation();
-        setIsChecked(response.data);
+      const response = await getStatusVentilation();
+      setIsChecked(response.data);
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
-  }
+  };
   const TurnLighTingOnOrOff = async (id) => {
     try {
       if (isChecked) {
@@ -59,7 +59,7 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       dispatch(fetchDataFailure(error.message));
     }
   };
-    const TurnVentilationOnOrOff = async () => {
+  const TurnVentilationOnOrOff = async () => {
     try {
       if (isChecked) {
         await TurnOffVentilation();
@@ -79,19 +79,28 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       if (type == "control") {
         TurnControlOnOrOff(id);
       }
-      if(type == "ventilation"){
-        TurnVentilationOnOrOff()
+      if (type == "ventilation") {
+        TurnVentilationOnOrOff();
       }
       onChange(!isChecked);
     }
   };
   useEffect(() => {
-    
-    if(type == "ventilation"){
+    if (type == "ventilation") {
       fetchStatusVentilation();
-    }else{
+    } else {
       fetchStatus(id);
     }
+    const timer = setInterval(() => {
+      if (type == "ventilation") {
+        fetchStatusVentilation();
+      } else {
+        fetchStatus(id);
+      }
+    }, 1000);
+
+    // Dọn dẹp interval khi component unmount
+    return () => clearInterval(timer);
   }, [dispatch]);
   return (
     <div className="flex items-center gap-2">
