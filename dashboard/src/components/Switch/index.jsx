@@ -71,7 +71,7 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
     }
   };
   const handleToggle = () => {
-    setIsChecked(!isChecked);
+    // setIsChecked(!isChecked);
     if (onChange) {
       if (type == "lighting") {
         TurnLighTingOnOrOff(id);
@@ -82,7 +82,7 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       if (type == "ventilation") {
         TurnVentilationOnOrOff();
       }
-      onChange(!isChecked);
+      // onChange(!isChecked);
     }
   };
   useEffect(() => {
