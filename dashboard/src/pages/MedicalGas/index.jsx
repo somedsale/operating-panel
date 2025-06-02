@@ -25,6 +25,7 @@ const MedicalGas = () => {
       fetchData();
     }, 5000);
 
+    
     // Dọn dẹp interval khi component unmount
     return () => clearInterval(timer);
   }, [dispatch]);
