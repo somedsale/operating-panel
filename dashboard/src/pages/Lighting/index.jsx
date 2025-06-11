@@ -21,7 +21,7 @@ const Lighting = () => {
   const [isToggleOn4, setIsToggleOn4] = useState(false);
   const [isToggleOn, setIsToggleOn] = useState(false);
   const dispatch = useDispatch();
-  const fetchData = async (id) => {
+  const fetchData = async () => {
     try {
       const response = await getAllLightings();
       setData(response.data);

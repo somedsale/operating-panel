@@ -1,27 +1,25 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import PopupRelay from "./popupRelay";
 
 const SettingPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState(true);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSave = () => {
-    console.log('Settings saved:', { notifications, theme });
+    console.log("Settings saved:", { notifications, theme });
     setIsOpen(false);
   };
 
   return (
     <div className=" bg-gray-100">
-      <button
-        onClick={togglePopup}
-        className=""
-      >
+      <button onClick={togglePopup} className="">
         <FontAwesomeIcon icon={faGear} />
       </button>
 
@@ -34,8 +32,18 @@ const SettingPopup = () => {
                 onClick={togglePopup}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -61,6 +69,9 @@ const SettingPopup = () => {
                   <option value="light">Light</option>
                   <option value="dark">Dark</option>
                 </select>
+              </div>
+              <div>
+                <PopupRelay />
               </div>
             </div>
 
