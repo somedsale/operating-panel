@@ -1,3 +1,4 @@
+const { clientMQTT } = require('../mqtt');
 const lightingService = require('../services/lightingService');
 const relayService = require('../services/relayService');
 
@@ -40,6 +41,12 @@ const TurnOn = async (req, res) => {
       return res.status(404).json({ message: 'Lighting not found' });
     }
     const relay = await relayService.findRelayById(lighting.relay._id)
+    const tempID = `ON${relay.id-1}`
+        clientMQTT.publish('control',tempID, { qos: 0, retain: false }, (error) => {
+    if (!error) {
+      console.log('Đã gửi tin nhắn');
+    }
+  })
     if(!relay){
       return res.status(404).json({ message: 'Relay not found' });
     }
@@ -56,6 +63,13 @@ const TurnOff = async (req, res) => {
       return res.status(404).json({ message: 'Lighting not found' });
     }
     const relay = await relayService.findRelayById(lighting.relay._id)
+    const tempID = `OFF${relay.id-1}`
+
+        clientMQTT.publish('control',tempID, { qos: 0, retain: false }, (error) => {
+    if (!error) {
+      console.log('Đã gửi tin nhắn');
+    }
+  })
     if(!relay){
       return res.status(404).json({ message: 'Relay not found' });
     }
