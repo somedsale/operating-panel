@@ -70,9 +70,7 @@ const SettingPopup = () => {
                   <option value="dark">Dark</option>
                 </select>
               </div>
-              <div>
-                <PopupRelay />
-              </div>
+            
             </div>
 
             <div className="mt-6 flex justify-end space-x-2">
