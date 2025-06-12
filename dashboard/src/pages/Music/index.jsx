@@ -4,8 +4,9 @@ import Divider from '../../components/Divider';
 import axios from 'axios';
 
 const Music = () => {
-    const API_KEY='AIzaSyCuiQ9UWrTeQtC8zequpT6KTgJ1Mp8ppng';
+    const API_KEY=process.env.REACT_APP_API_YOUTUBE_KEY;
   const [searchTerm, setSearchTerm] = useState('');
+  const [list,setList] = useState([]);
   const [videoId, setVideoId] = useState('');
   const [error, setError] = useState('');
 
@@ -20,7 +21,7 @@ const Music = () => {
           q: searchTerm + ' music',
           type: 'video',
           key: API_KEY, // Thay bằng API key thực từ Google Cloud Console
-          maxResults: 1
+          maxResults: 10
         }
       });
 
