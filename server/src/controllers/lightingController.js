@@ -43,8 +43,8 @@ const TurnOn = async (req, res) => {
     const relay = await relayService.findRelayById(lighting.relay._id)
     const tempID = `ON${relay.id-1}`
         clientMQTT.publish('control',tempID, { qos: 0, retain: false }, (error) => {
-    if (!error) {
-      console.log('Đã gửi tin nhắn');
+    if (error) {
+      console.log(error);
     }
   })
     if(!relay){
@@ -66,8 +66,8 @@ const TurnOff = async (req, res) => {
     const tempID = `OFF${relay.id-1}`
 
         clientMQTT.publish('control',tempID, { qos: 0, retain: false }, (error) => {
-    if (!error) {
-      console.log('Đã gửi tin nhắn');
+    if (error) {
+      console.log(error);
     }
   })
     if(!relay){
