@@ -4,8 +4,8 @@ const lightingController = require('../controllers/lightingController');
 
 router.get('/', lightingController.getAllLightings);
 router.get('/status/:id', lightingController.getStatusLight);
-router.get('/turn-on/:id', lightingController.TurnOn);
-router.get('/turn-off/:id', lightingController.TurnOff);
+// router.get('/turn-on/:id', lightingController.TurnOn);
+// router.get('/turn-off/:id', lightingController.TurnOff);
 router.post('/', lightingController.createLighting);
 router.put('/change-relay', lightingController.changeRelay);
 

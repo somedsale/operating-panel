@@ -102,34 +102,6 @@ const ColorAmbient = () => {
         style={{ backgroundColor: selectedColor }}
       />
 
-      {/* Thanh điều chỉnh độ sáng */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={handleBrightnessDecrease}
-          className="w-6 h-6 interface:w-8 interface:h-8 text-xl flex items-center justify-center bg-gray-200 rounded-full text-gray-700 hover:bg-gray-300"
-          disabled={brightnessLevel === 0 || !isOn}
-        >
-          –
-        </button>
-        <div className="flex gap-1 items-end">
-          {[...Array(10)].map((_, index) => (
-            <div
-              key={index}
-              className={`w-2 interface:w-3 rounded-full ${
-                index <= brightnessLevel && isOn ? 'bg-gray-600' : 'bg-gray-300'
-              }`}
-              style={{ height: `${getHeight(index)}px` }}
-            />
-          ))}
-        </div>
-        <button
-          onClick={handleBrightnessIncrease}
-          className="w-6 h-6 interface:w-8 interface:h-8 text-xl flex items-center justify-center bg-gray-200 rounded-full text-gray-700 hover:bg-gray-300"
-          disabled={brightnessLevel === 9 || !isOn}
-        >
-          +
-        </button>
-      </div>
     </div>
   );
 };

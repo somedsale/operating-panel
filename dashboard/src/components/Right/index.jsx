@@ -53,7 +53,7 @@ const Right = () => {
     const timer = setInterval(() => {
       fetchTemp();
       fetchHumd();
-    }, 2000);
+    }, 10000);
 
     // Dọn dẹp interval khi component unmount
     return () => clearInterval(timer);

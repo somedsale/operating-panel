@@ -1,40 +1,41 @@
-import { useSelector, useDispatch } from 'react-redux';
-import Header from './components/Header';
-import { useTranslation } from 'react-i18next';
-import { setLanguage } from './store/languageSlice';
-import { Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Control from './pages/Control';
-import NotFound from './pages/NotFound';
-import NavBar from './components/NavBar';
-import Right from './components/Right';
-import MedicalGas from './pages/MedicalGas';
-import Ventilation from './pages/Ventilation';
-import Lighting from './pages/Lighting';
-import Power from './pages/Power';
-import Footer from './components/Footer';
-import StandBy from './pages/StandBy';
-import TimePage from './pages/TimePage';
-import Music from './pages/Music';
-import History from './pages/History';
+import { useSelector, useDispatch } from "react-redux";
+import Header from "./components/Header";
+import { useTranslation } from "react-i18next";
+import { setLanguage } from "./store/languageSlice";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Control from "./pages/Control";
+import NotFound from "./pages/NotFound";
+import NavBar from "./components/NavBar";
+import Right from "./components/Right";
+import MedicalGas from "./pages/MedicalGas";
+import Ventilation from "./pages/Ventilation";
+import Lighting from "./pages/Lighting";
+import Power from "./pages/Power";
+import Footer from "./components/Footer";
+import StandBy from "./pages/StandBy";
+import TimePage from "./pages/TimePage";
+import Music from "./pages/Music";
+import History from "./pages/History";
+import { useEffect, useState } from "react";
+import { addMessage, setStatus, setWebSocket } from "./store/websocketSlice";
 
 function App() {
-const { t } = useTranslation();
-
+  const { t } = useTranslation();
   return (
-    <div className='container-2xl text-black bg-blue-50 h-[100vh]'>
-<Routes>
+    <div className="container-2xl text-black bg-blue-50 h-[100vh]">
+      <Routes>
         {/* Route cho Home Page, nằm ngoài Header và NavBar */}
         <Route path="/" element={<Home />} />
-        <Route path='/standby' element={<StandBy/>}/>
-        <Route path='/time' element={<TimePage/>}/>
+        <Route path="/standby" element={<StandBy />} />
+        <Route path="/time" element={<TimePage />} />
         {/* Route cho các trang khác, vẫn giữ Header, NavBar, và Right */}
         <Route
           path="*"
           element={
             <>
               <Header />
-              <div className='flex w-full px-4'>
+              <div className="flex w-full px-4">
                 <NavBar />
                 <Routes>
                   <Route path="/lighting" element={<Lighting />} />
@@ -48,7 +49,7 @@ const { t } = useTranslation();
                 </Routes>
                 <Right />
               </div>
-              <Footer/>
+              <Footer />
             </>
           }
         />

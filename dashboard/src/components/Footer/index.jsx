@@ -46,12 +46,6 @@ const Footer = () => {
     fetchData();
     getStatusAgss();
 
-    const timer = setInterval(() => {
-      fetchData();
-      getStatusAgss();
-    }, 5000);
-    // Dọn dẹp interval khi component unmount
-    return () => clearInterval(timer);
   }, [dispatch]);
 
   return (

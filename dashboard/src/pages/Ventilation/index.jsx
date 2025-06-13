@@ -29,12 +29,7 @@ const Ventilation = () => {
   };
   useEffect(() => {
     fetchData();
-    const timer = setInterval(() => {
-      fetchData();
-    }, 1000);
 
-    // Dọn dẹp interval khi component unmount
-    return () => clearInterval(timer);
   }, [dispatch]);
   return (
     <div className="w-9/12 px-8">

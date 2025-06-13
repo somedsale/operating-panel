@@ -10,12 +10,17 @@ import {
   TurnOnLightingById,
   TurnOnVentilation,
 } from "../../features/api/apiClient";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchDataFailure } from "../../features/api/apiSlice";
+import { useWebSocket } from "../../context/WebSocketContext";
 
 const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
   const [isChecked, setIsChecked] = useState(checked);
   const dispatch = useDispatch();
+  const { messages, status, username } = useSelector(
+    (state) => state.websocket
+  );
+  const { sendMessage } = useWebSocket();
   const fetchStatus = async (id) => {
     try {
       if (type == "lighting") {
@@ -38,36 +43,36 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
     }
   };
   const TurnLighTingOnOrOff = async (id) => {
-    try {
-      if (isChecked) {
-        await TurnOffLightingById(id);
-      } else {
-        await TurnOnLightingById(id);
+    if (isChecked) {
+      if (status === "connected") {
+        sendMessage({ type: "lighting/turn_off", id: id });
       }
-    } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+    } else {
+      if (status === "connected") {
+        sendMessage({ type: "lighting/turn_on", id: id });
+      }
     }
   };
   const TurnControlOnOrOff = async (id) => {
-    try {
-      if (isChecked) {
-        await TurnOffControlById(id);
-      } else {
-        await TurnOnControlById(id);
+    if (isChecked) {
+      if (status === "connected") {
+        sendMessage({ type: "control/turn_off", id: id });
       }
-    } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+    } else {
+      if (status === "connected") {
+        sendMessage({ type: "control/turn_on", id: id });
+      }
     }
   };
   const TurnVentilationOnOrOff = async () => {
-    try {
-      if (isChecked) {
-        await TurnOffVentilation();
-      } else {
-        await TurnOnVentilation();
+    if (isChecked) {
+      if (status === "connected") {
+        sendMessage({ type: "ventilation/turn_off" });
       }
-    } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+    } else {
+      if (status === "connected") {
+        sendMessage({ type: "ventilation/turn_on" });
+      }
     }
   };
   const handleToggle = () => {
@@ -85,23 +90,14 @@ const ToggleSwitch = ({ type, id, label, onChange, checked }) => {
       // onChange(!isChecked);
     }
   };
+  if (type == "ventilation") {
+    fetchStatusVentilation();
+  } else {
+    fetchStatus(id);
+  }
+  console.log(messages)
   useEffect(() => {
-    if (type == "ventilation") {
-      fetchStatusVentilation();
-    } else {
-      fetchStatus(id);
-    }
-    const timer = setInterval(() => {
-      if (type == "ventilation") {
-        fetchStatusVentilation();
-      } else {
-        fetchStatus(id);
-      }
-    }, 1000);
-
-    // Dọn dẹp interval khi component unmount
-    return () => clearInterval(timer);
-  }, [dispatch]);
+  }, []);
   return (
     <div className="flex items-center gap-2">
       {label && (

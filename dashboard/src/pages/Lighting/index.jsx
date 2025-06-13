@@ -14,29 +14,12 @@ import {
 } from "../../features/api/apiClient";
 const Lighting = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState([]);
   const [isToggleOn1, setIsToggleOn1] = useState(false);
   const [isToggleOn2, setIsToggleOn2] = useState(false);
   const [isToggleOn3, setIsToggleOn3] = useState(false);
   const [isToggleOn4, setIsToggleOn4] = useState(false);
   const [isToggleOn, setIsToggleOn] = useState(false);
   const dispatch = useDispatch();
-  const fetchData = async () => {
-    try {
-      const response = await getAllLightings();
-      setData(response.data);
-    } catch (error) {
-      dispatch(fetchDataFailure(error.message));
-    }
-  };
-  const fetchStatus = async (id) => {
-    try {
-      const response = await getStatusLightingById(id);
-      return response.data.status;
-    } catch (error) {
-      dispatch(fetchDataFailure(error.message));
-    }
-  };
   const handleToggleChange1 = (newState) => {
     setIsToggleOn1(newState);
     // You can perform other actions here based on the state
@@ -54,19 +37,7 @@ const Lighting = () => {
     // You can perform other actions here based on the state
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  //   setIsToggleOn1(fetchStatus(1));
-  //   setIsToggleOn2(fetchStatus(2));
-  //   const timer = setInterval(() => {
-  //     fetchData();
-  //     setIsToggleOn1(fetchStatus(1));
-  //     setIsToggleOn2(fetchStatus(2));
-  //   }, 1000);
 
-  //   // Dọn dẹp interval khi component unmount
-  //   return () => clearInterval(timer);
-  // }, [dispatch]);
   return (
     <div className="w-9/12 px-8">
       <div className="w-full text-center capitalize">

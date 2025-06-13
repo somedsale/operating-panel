@@ -10,6 +10,7 @@ const ventilationRoutes = require('./routes/ventilationRoutes')
 const app = express();
 const cors = require('cors');
 const { origin } = require('../config/env');
+app.use(express.static('public'));
 // Middleware
 app.use(express.json()); // Parse JSON body
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded body

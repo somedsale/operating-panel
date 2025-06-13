@@ -5,13 +5,18 @@ import {
   getVentilation,
   increaseVentilation,
 } from "../../features/api/apiClient";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchDataFailure } from "../../features/api/apiSlice";
+import { useWebSocket } from "../../context/WebSocketContext";
 
 const Regulation = ({ isOn, type }) => {
   const [level, setLevel] = useState(4); // Mức mặc định là 4 (giữa thang 0-7)
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
+  const { messages, status, username } = useSelector(
+    (state) => state.websocket
+  );
+  const { sendMessage } = useWebSocket();
   const fetchVentilation = async () => {
     try {
       const response = await getVentilation();
@@ -21,13 +26,13 @@ const Regulation = ({ isOn, type }) => {
       dispatch(fetchDataFailure(error.message));
     }
   };
-    const fetchLightingStatus = async () => {
+  const fetchLightingStatus = async () => {
     try {
       const response = await getStatusLightingById(1);
       const response1 = await getStatusLightingById(2);
 
       // setLevel(response.data.volume);
-      setIsChecked(response.data.status||response1.data.status);
+      setIsChecked(response.data.status || response1.data.status);
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
     }
@@ -50,9 +55,11 @@ const Regulation = ({ isOn, type }) => {
   // Xử lý tăng mức
   const handleIncrease = () => {
     if (level < 9) {
-      setLevel(level + 1);
+      // setLevel(level + 1);
       if (type == "ventilation") {
-        handleIncreaseVentilation();
+        if (status === "connected") {
+          sendMessage({ type: "ventilation/increase", volume: level });
+        }
       }
     }
   };
@@ -60,9 +67,11 @@ const Regulation = ({ isOn, type }) => {
   // Xử lý giảm mức
   const handleDecrease = () => {
     if (level > 0) {
-      setLevel(level - 1);
+      // setLevel(level - 1);
       if (type == "ventilation") {
-        handleDecreaseVentilation();
+        if (status === "connected") {
+          sendMessage({ type: "ventilation/decrease", volume: level });
+        }
       }
     }
   };
@@ -73,25 +82,13 @@ const Regulation = ({ isOn, type }) => {
     const increment = 4;
     return baseHeight + index * increment;
   };
+  if (type == "ventilation") {
+    fetchVentilation();
+  } else if (type == "lighting") {
+    fetchLightingStatus();
+  }
   useEffect(() => {
-    if (type == "ventilation") {
-      fetchVentilation();
-    }
-    else if(type =="lighting"){
-      fetchLightingStatus()
-    }
-    const timer = setInterval(() => {
-    if (type == "ventilation") {
-      fetchVentilation();
-    }
-    else if(type =="lighting"){
-      fetchLightingStatus()
-    }
-    }, 1000);
-
-    // Dọn dẹp interval khi component unmount
-    return () => clearInterval(timer);
-  }, [dispatch]);
+  }, []);
   return (
     <div className="flex items-center gap-2">
       <button
